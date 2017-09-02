@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">BakingApp</string>
+    <string name="app_name">Baking App</string>
+    <string name="image_description">Recipe Image</string>
+
+    <string name="failed_fetch_recipe">Failed to fetch Recipes</string>
+
+    <string name="serving_prefix">Serving for&#160;</string>
+    <string name="serving_suffix">&#160;persons</string>
 </resources>
