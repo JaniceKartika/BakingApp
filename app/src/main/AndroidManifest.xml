@@ -20,5 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RecipeDetailActivity"
+            android:label="@string/recipe_detail_label"
+            android:parentActivityName=".RecipeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 </manifest>

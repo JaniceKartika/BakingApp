@@ -7,6 +7,7 @@
     <dimen name="line_spacing">4dp</dimen>
     <dimen name="button_height">36dp</dimen>
     <dimen name="image_max_height">200dp</dimen>
+    <dimen name="tile_height">72dp</dimen>
 
     <dimen name="font_small">14sp</dimen>
     <dimen name="font_normal">16sp</dimen>

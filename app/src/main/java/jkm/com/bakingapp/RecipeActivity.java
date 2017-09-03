@@ -1,5 +1,6 @@
 package jkm.com.bakingapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -13,6 +14,8 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
 
     @Override
     public void onRecipeSelected(RecipeModel recipeModel) {
-        // TODO: goto next activity
+        Intent intent = new Intent(this, RecipeDetailActivity.class);
+        intent.putExtra(getString(R.string.recipes_key), recipeModel);
+        startActivity(intent);
     }
 }

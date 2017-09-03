@@ -28,7 +28,7 @@
                 android:contentDescription="@string/image_description"
                 android:maxHeight="@dimen/image_max_height"
                 android:scaleType="centerCrop"
-                tools:src="@drawable/placeholder" />
+                tools:src="@drawable/cheese_cake" />
 
             <TextView
                 android:id="@+id/tv_recipe_name"
@@ -40,7 +40,7 @@
                 android:layout_marginStart="@dimen/horizontal_margin"
                 android:textColor="@color/textColorPrimary"
                 android:textSize="@dimen/font_normal"
-                tools:text="Cheese Cake" />
+                tools:text="Cheesecake" />
 
             <TextView
                 android:id="@+id/tv_recipe_serving"

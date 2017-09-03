@@ -46,22 +46,7 @@ class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>
 
         String imagePath = recipeModel.getImage() == null ? "" : recipeModel.getImage();
         if (imagePath.isEmpty()) {
-            switch (recipeName) {
-                case "Nutella Pie":
-                    holder.recipeImageView.setImageResource(R.drawable.nutella_pie);
-                    break;
-                case "Brownies":
-                    holder.recipeImageView.setImageResource(R.drawable.brownies);
-                    break;
-                case "Yellow Cake":
-                    holder.recipeImageView.setImageResource(R.drawable.yellow_cake);
-                    break;
-                case "Cheesecake":
-                    holder.recipeImageView.setImageResource(R.drawable.cheese_cake);
-                    break;
-                default:
-                    holder.recipeImageView.setImageResource(R.drawable.placeholder);
-            }
+            holder.recipeImageView.setImageResource(RecipeAssets.getRecipeImageID(recipeName));
         } else {
             Picasso.with(context)
                     .load(imagePath)

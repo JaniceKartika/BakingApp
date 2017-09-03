@@ -1,11 +1,17 @@
 <resources>
     <string name="app_name">Baking App</string>
+    <string name="recipe_detail_label">Recipe Detail</string>
+
     <string name="image_description">Recipe Image</string>
 
     <string name="failed_fetch_recipes">Failed to fetch Recipes</string>
+    <string name="failed_show_recipe_detail">Failed to show Recipe detail</string>
 
     <string name="serving_prefix">Serving for&#160;</string>
     <string name="serving_suffix">&#160;persons</string>
-    
+
+    <string name="ingredients">Ingredients</string>
+    <string name="steps">Steps</string>
+
     <string name="recipes_key">Recipes Key</string>
 </resources>
