@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class IngredientModel implements Parcelable {
     @SerializedName("quantity")
-    private int quantity;
+    private float quantity;
     @SerializedName("measure")
     private String measure;
     @SerializedName("ingredient")
@@ -17,11 +17,11 @@ public class IngredientModel implements Parcelable {
         // Constructor
     }
 
-    public int getQuantity() {
+    public float getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(float quantity) {
         this.quantity = quantity;
     }
 
@@ -48,13 +48,13 @@ public class IngredientModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.quantity);
+        dest.writeFloat(this.quantity);
         dest.writeString(this.measure);
         dest.writeString(this.ingredient);
     }
 
     private IngredientModel(Parcel in) {
-        this.quantity = in.readInt();
+        this.quantity = in.readFloat();
         this.measure = in.readString();
         this.ingredient = in.readString();
     }

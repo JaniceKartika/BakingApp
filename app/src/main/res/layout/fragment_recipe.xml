@@ -19,7 +19,7 @@
         android:gravity="center"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:text="@string/failed_fetch_recipe"
+        android:text="@string/failed_fetch_recipes"
         android:textColor="@color/textColorPrimary"
         android:textSize="@dimen/font_normal"
         android:visibility="gone" />

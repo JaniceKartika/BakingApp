@@ -26,6 +26,7 @@
                 android:layout_marginBottom="@dimen/vertical_margin"
                 android:adjustViewBounds="true"
                 android:contentDescription="@string/image_description"
+                android:maxHeight="@dimen/image_max_height"
                 android:scaleType="centerCrop"
                 tools:src="@drawable/placeholder" />
 

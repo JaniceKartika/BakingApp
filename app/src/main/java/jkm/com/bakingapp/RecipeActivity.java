@@ -1,10 +1,9 @@
 package jkm.com.bakingapp;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.support.v7.app.AppCompatActivity;
 
-public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.ItemClickListener {
+public class RecipeActivity extends AppCompatActivity implements RecipeFragment.OnRecipeClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -13,7 +12,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeAdapter.I
     }
 
     @Override
-    public void setOnItemClickListener(View view, int position) {
-
+    public void onRecipeSelected(RecipeModel recipeModel) {
+        // TODO: goto next activity
     }
 }

@@ -18,9 +18,9 @@ import butterknife.ButterKnife;
 class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
     private Context context;
     private ArrayList<RecipeModel> recipeModels;
-    private ItemClickListener itemClickListener;
+    private OnItemClickListener itemClickListener;
 
-    RecipeAdapter(Context context, ArrayList<RecipeModel> recipeModels, ItemClickListener itemClickListener) {
+    RecipeAdapter(Context context, ArrayList<RecipeModel> recipeModels, OnItemClickListener itemClickListener) {
         this.context = context;
         this.recipeModels = recipeModels;
         this.itemClickListener = itemClickListener;
@@ -44,8 +44,8 @@ class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>
                 context.getString(R.string.serving_suffix);
         holder.recipeServingTextView.setText(serving);
 
-        String imagePath = recipeModel.getImage();
-        if (imagePath == null) {
+        String imagePath = recipeModel.getImage() == null ? "" : recipeModel.getImage();
+        if (imagePath.isEmpty()) {
             switch (recipeName) {
                 case "Nutella Pie":
                     holder.recipeImageView.setImageResource(R.drawable.nutella_pie);
@@ -77,7 +77,7 @@ class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>
         else return recipeModels.size();
     }
 
-    interface ItemClickListener {
+    interface OnItemClickListener {
         void setOnItemClickListener(View view, int position);
     }
 
