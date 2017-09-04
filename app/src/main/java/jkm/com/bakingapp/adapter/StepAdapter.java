@@ -1,4 +1,4 @@
-package jkm.com.bakingapp;
+package jkm.com.bakingapp.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -12,13 +12,15 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jkm.com.bakingapp.R;
+import jkm.com.bakingapp.model.StepModel;
 
-class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder> {
+public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder> {
     private Context context;
     private ArrayList<StepModel> stepModels;
     private OnItemClickListener itemClickListener;
 
-    StepAdapter(Context context, ArrayList<StepModel> stepModels, OnItemClickListener itemClickListener) {
+    public StepAdapter(Context context, ArrayList<StepModel> stepModels, OnItemClickListener itemClickListener) {
         this.context = context;
         this.stepModels = stepModels;
         this.itemClickListener = itemClickListener;
@@ -50,7 +52,7 @@ class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepViewHolder> {
         else return stepModels.size();
     }
 
-    interface OnItemClickListener {
+    public interface OnItemClickListener {
         void setOnItemClickListener(View view, int position);
     }
 

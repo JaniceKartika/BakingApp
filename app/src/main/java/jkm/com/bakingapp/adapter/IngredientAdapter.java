@@ -1,4 +1,4 @@
-package jkm.com.bakingapp;
+package jkm.com.bakingapp.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,11 +10,14 @@ import android.widget.TextView;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
+import jkm.com.bakingapp.R;
+import jkm.com.bakingapp.model.IngredientModel;
+
+public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
     private Context context;
     private ArrayList<IngredientModel> ingredientModels;
 
-    IngredientAdapter(Context context, ArrayList<IngredientModel> ingredientModels) {
+    public IngredientAdapter(Context context, ArrayList<IngredientModel> ingredientModels) {
         this.context = context;
         this.ingredientModels = ingredientModels;
     }

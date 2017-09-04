@@ -1,4 +1,4 @@
-package jkm.com.bakingapp;
+package jkm.com.bakingapp.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -14,13 +14,16 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jkm.com.bakingapp.R;
+import jkm.com.bakingapp.util.RecipeAssets;
+import jkm.com.bakingapp.model.RecipeModel;
 
-class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
+public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
     private Context context;
     private ArrayList<RecipeModel> recipeModels;
     private OnItemClickListener itemClickListener;
 
-    RecipeAdapter(Context context, ArrayList<RecipeModel> recipeModels, OnItemClickListener itemClickListener) {
+    public RecipeAdapter(Context context, ArrayList<RecipeModel> recipeModels, OnItemClickListener itemClickListener) {
         this.context = context;
         this.recipeModels = recipeModels;
         this.itemClickListener = itemClickListener;
@@ -62,7 +65,7 @@ class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder>
         else return recipeModels.size();
     }
 
-    interface OnItemClickListener {
+    public interface OnItemClickListener {
         void setOnItemClickListener(View view, int position);
     }
 

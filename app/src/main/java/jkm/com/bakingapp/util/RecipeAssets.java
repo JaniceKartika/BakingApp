@@ -1,4 +1,6 @@
-package jkm.com.bakingapp;
+package jkm.com.bakingapp.util;
+
+import jkm.com.bakingapp.R;
 
 public class RecipeAssets {
     public static int getRecipeImageID(String recipeName) {

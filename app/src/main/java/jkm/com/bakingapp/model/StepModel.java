@@ -1,4 +1,4 @@
-package jkm.com.bakingapp;
+package jkm.com.bakingapp.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

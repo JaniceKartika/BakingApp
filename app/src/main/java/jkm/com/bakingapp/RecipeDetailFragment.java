@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jkm.com.bakingapp.adapter.IngredientAdapter;
+import jkm.com.bakingapp.adapter.StepAdapter;
+import jkm.com.bakingapp.model.RecipeModel;
 
 public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItemClickListener {
 

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import jkm.com.bakingapp.model.RecipeModel;
+
 public class RecipeActivity extends AppCompatActivity implements RecipeFragment.OnRecipeClickListener {
 
     @Override

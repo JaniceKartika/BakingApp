@@ -17,6 +17,8 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jkm.com.bakingapp.model.RecipeModel;
+import jkm.com.bakingapp.util.RecipeAssets;
 
 public class RecipeDetailActivity extends AppCompatActivity {
 

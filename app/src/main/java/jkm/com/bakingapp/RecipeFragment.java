@@ -19,6 +19,9 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jkm.com.bakingapp.adapter.RecipeAdapter;
+import jkm.com.bakingapp.model.RecipeModel;
+import jkm.com.bakingapp.util.GridSpacingItemDecoration;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
