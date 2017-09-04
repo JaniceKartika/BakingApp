@@ -1,5 +1,6 @@
 package jkm.com.bakingapp;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -29,8 +30,20 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
 
     private RecipeModel recipeModel;
 
+    private OnStepClickListener mCallback;
+
     public RecipeDetailFragment() {
         // Constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mCallback = (OnStepClickListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnStepClickListener");
+        }
     }
 
     @Nullable
@@ -59,7 +72,9 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
 
     @Override
     public void setOnItemClickListener(View view, int position) {
-
+        if (mCallback != null) {
+            mCallback.onStepSelected(position);
+        }
     }
 
     @Override
@@ -77,5 +92,9 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setNestedScrollingEnabled(false);
+    }
+
+    interface OnStepClickListener {
+        void onStepSelected(int position);
     }
 }

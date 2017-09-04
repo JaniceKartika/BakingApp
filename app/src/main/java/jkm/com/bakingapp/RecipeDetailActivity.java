@@ -1,6 +1,7 @@
 package jkm.com.bakingapp;
 
 import android.content.Intent;
+import android.content.pm.LabeledIntent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import butterknife.ButterKnife;
 import jkm.com.bakingapp.model.RecipeModel;
 import jkm.com.bakingapp.util.RecipeAssets;
 
-public class RecipeDetailActivity extends AppCompatActivity {
+public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailFragment.OnStepClickListener {
 
     @BindView(R.id.collapsing_toolbar_recipe_detail)
     CollapsingToolbarLayout collapsingToolbar;
@@ -28,6 +29,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
     ImageView recipeDetailImageView;
     @BindView(R.id.toolbar_recipe_detail)
     Toolbar toolbar;
+
+    private RecipeModel recipeModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,7 +48,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent.hasExtra(getString(R.string.recipes_key))) {
-            RecipeModel recipeModel = intent.getParcelableExtra(getString(R.string.recipes_key));
+            recipeModel = intent.getParcelableExtra(getString(R.string.recipes_key));
 
             collapsingToolbar.setTitle(recipeModel.getName());
             collapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
@@ -74,6 +77,14 @@ public class RecipeDetailActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, getString(R.string.failed_show_recipe_detail), Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onStepSelected(int position) {
+        Intent intent = new Intent(this, StepDetailActivity.class);
+        intent.putParcelableArrayListExtra(getString(R.string.steps_key), recipeModel.getSteps());
+        intent.putExtra(getString(R.string.step_position_key), position);
+        startActivity(intent);
     }
 
     private void setToolbarViewParams(int orientation) {
