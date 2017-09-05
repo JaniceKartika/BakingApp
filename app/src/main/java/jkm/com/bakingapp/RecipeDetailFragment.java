@@ -28,12 +28,20 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
     @BindView(R.id.rv_recipe_steps_detail)
     RecyclerView stepsRecyclerView;
 
-    private RecipeModel recipeModel;
-
     private OnStepClickListener mCallback;
 
     public RecipeDetailFragment() {
         // Constructor
+    }
+
+    public static RecipeDetailFragment newInstance(Context context, RecipeModel recipeModel) {
+        RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(context.getString(R.string.recipes_key), recipeModel);
+        recipeDetailFragment.setArguments(bundle);
+
+        return recipeDetailFragment;
     }
 
     @Override
@@ -52,20 +60,22 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
         View view = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
         ButterKnife.bind(this, view);
 
-        if (savedInstanceState != null) {
-            recipeModel = savedInstanceState.getParcelable(getString(R.string.recipes_key));
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            RecipeModel recipeModel = bundle.getParcelable(getString(R.string.recipes_key));
+            if (recipeModel != null) {
+                recipeNameTextView.setText(recipeModel.getName());
+
+                configureRecyclerView(ingredientsRecyclerView);
+                IngredientAdapter ingredientAdapter = new IngredientAdapter(getContext(), recipeModel.getIngredients());
+                ingredientsRecyclerView.setAdapter(ingredientAdapter);
+
+                configureRecyclerView(stepsRecyclerView);
+                stepsRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+                StepAdapter stepAdapter = new StepAdapter(getContext(), recipeModel.getSteps(), this);
+                stepsRecyclerView.setAdapter(stepAdapter);
+            }
         }
-
-        recipeNameTextView.setText(recipeModel == null ? "" : recipeModel.getName());
-
-        configureRecyclerView(ingredientsRecyclerView);
-        IngredientAdapter ingredientAdapter = new IngredientAdapter(getContext(), recipeModel.getIngredients());
-        ingredientsRecyclerView.setAdapter(ingredientAdapter);
-
-        configureRecyclerView(stepsRecyclerView);
-        stepsRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        StepAdapter stepAdapter = new StepAdapter(getContext(), recipeModel.getSteps(), this);
-        stepsRecyclerView.setAdapter(stepAdapter);
 
         return view;
     }
@@ -75,16 +85,6 @@ public class RecipeDetailFragment extends Fragment implements StepAdapter.OnItem
         if (mCallback != null) {
             mCallback.onStepSelected(position);
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(getString(R.string.recipes_key), recipeModel);
-    }
-
-    public void setRecipeModel(RecipeModel recipeModel) {
-        this.recipeModel = recipeModel;
     }
 
     private void configureRecyclerView(RecyclerView recyclerView) {

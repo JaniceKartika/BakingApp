@@ -57,10 +57,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             toolbarShadow.bringToFront();
 
             if (savedInstanceState == null) {
-                StepDetailFragment stepDetailFragment = new StepDetailFragment();
-                stepDetailFragment.setStepModels(recipeModel.getSteps());
-                stepDetailFragment.setInitialPosition(0);
-
+                StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(this, recipeModel.getSteps(), 0);
                 setTitle(recipeModel.getSteps().get(0).getShortDescription());
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
@@ -92,9 +89,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         }
 
         if (savedInstanceState == null) {
-            RecipeDetailFragment recipeDetailFragment = new RecipeDetailFragment();
-            recipeDetailFragment.setRecipeModel(recipeModel);
-
+            RecipeDetailFragment recipeDetailFragment = RecipeDetailFragment.newInstance(this, recipeModel);
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .add(R.id.recipe_detail_container, recipeDetailFragment)
@@ -110,10 +105,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
     @Override
     public void onStepSelected(int position) {
         if (isTwoPane) {
-            StepDetailFragment stepDetailFragment = new StepDetailFragment();
-            stepDetailFragment.setStepModels(recipeModel.getSteps());
-            stepDetailFragment.setInitialPosition(position);
-
+            StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(RecipeDetailActivity.this,
+                    recipeModel.getSteps(), position);
             setTitle(recipeModel.getSteps().get(position).getShortDescription());
 
             FragmentManager fragmentManager = getSupportFragmentManager();

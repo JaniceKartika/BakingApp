@@ -141,8 +141,8 @@ public class EachStepFragment extends Fragment implements ExoPlayer.EventListene
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
+        super.onStop();
         releasePlayer();
     }
 

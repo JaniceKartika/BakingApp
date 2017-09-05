@@ -35,13 +35,21 @@ public class StepDetailFragment extends Fragment {
     @BindView(R.id.relative_layout_tab)
     RelativeLayout bottomNavigationLayout;
 
-    private ArrayList<StepModel> stepModels;
-    private int initialPosition;
-
     private OnPageSelected mPageSelectedCallback;
 
     public StepDetailFragment() {
         // Constructor
+    }
+
+    public static StepDetailFragment newInstance(Context context, ArrayList<StepModel> stepModels, int initialPosition) {
+        StepDetailFragment stepDetailFragment = new StepDetailFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(context.getString(R.string.steps_key), stepModels);
+        bundle.putInt(context.getString(R.string.step_position_key), initialPosition);
+        stepDetailFragment.setArguments(bundle);
+
+        return stepDetailFragment;
     }
 
     @Override
@@ -71,13 +79,20 @@ public class StepDetailFragment extends Fragment {
 
         setTabLayoutParams();
 
-        if (savedInstanceState != null) {
-            stepModels = savedInstanceState.getParcelableArrayList(getString(R.string.steps_key));
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            ArrayList<StepModel> stepModels = bundle.getParcelableArrayList(getString(R.string.steps_key));
+            int initialPosition = bundle.getInt(getString(R.string.step_position_key), 0);
+            if (stepModels != null) {
+                stepDetailViewPager.setAdapter(new StepViewPagerAdapter(getFragmentManager(), stepModels));
+                stepDetailTabLayout.setupWithViewPager(stepDetailViewPager, true);
+                stepDetailViewPager.setCurrentItem(initialPosition, true);
+            } else {
+                bottomNavigationLayout.setVisibility(View.INVISIBLE);
+            }
+        } else {
+            bottomNavigationLayout.setVisibility(View.INVISIBLE);
         }
-
-        stepDetailViewPager.setAdapter(new StepViewPagerAdapter(getFragmentManager(), stepModels));
-        stepDetailTabLayout.setupWithViewPager(stepDetailViewPager, true);
-        stepDetailViewPager.setCurrentItem(initialPosition, true);
 
         ivArrowLeft.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,12 +130,6 @@ public class StepDetailFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(getString(R.string.steps_key), stepModels);
-    }
-
     private void setTabLayoutParams() {
         DisplayMetrics displaymetrics = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -136,15 +145,7 @@ public class StepDetailFragment extends Fragment {
         stepDetailTabLayout.setLayoutParams(layoutParamsForTabLayout);
     }
 
-    public void setStepModels(ArrayList<StepModel> stepModels) {
-        this.stepModels = stepModels;
-    }
-
-    public void setInitialPosition(int initialPosition) {
-        this.initialPosition = initialPosition;
-    }
-
-    public interface OnPageSelected {
+    interface OnPageSelected {
         void setOnPageSelected(int position);
     }
 

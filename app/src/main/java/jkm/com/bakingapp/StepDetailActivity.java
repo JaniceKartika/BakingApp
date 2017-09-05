@@ -42,10 +42,7 @@ public class StepDetailActivity extends AppCompatActivity implements StepDetailF
             setTitle(stepModels.get(position).getShortDescription());
 
             if (savedInstanceState == null) {
-                StepDetailFragment stepDetailFragment = new StepDetailFragment();
-                stepDetailFragment.setStepModels(stepModels);
-                stepDetailFragment.setInitialPosition(position);
-
+                StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(this, stepModels, position);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .add(R.id.step_detail_container, stepDetailFragment)
