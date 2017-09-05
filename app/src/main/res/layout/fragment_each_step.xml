@@ -1,35 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-        android:id="@+id/player_view"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/image_max_height"
-        android:layout_marginBottom="@dimen/activity_vertical_margin" />
-
-    <ImageView
-        android:id="@+id/iv_each_step"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/image_max_height"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/image_description"
-        android:scaleType="centerCrop"
-        tools:src="@drawable/cheese_cake" />
-
-    <TextView
-        android:id="@+id/tv_each_step"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="@dimen/font_normal"
-        tools:text="3. Press the cookie crumb mixture into the prepared pie pan and bake for 12 minutes. Let crust cool to room temperature." />
-</LinearLayout>
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/player_container"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/image_max_height"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@android:color/black">
+
+            <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+                android:id="@+id/player_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/iv_each_step"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/image_max_height"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/image_description"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/cheese_cake" />
+
+        <TextView
+            android:id="@+id/tv_each_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:lineSpacingExtra="@dimen/line_spacing"
+            android:paddingEnd="@dimen/activity_horizontal_margin"
+            android:paddingStart="@dimen/activity_horizontal_margin"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/font_normal"
+            tools:text="3. Press the cookie crumb mixture into the prepared pie pan and bake for 12 minutes. Let crust cool to room temperature." />
+    </LinearLayout>
+</ScrollView>

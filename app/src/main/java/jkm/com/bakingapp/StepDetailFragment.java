@@ -1,11 +1,12 @@
 package jkm.com.bakingapp;
 
+import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
@@ -31,12 +32,26 @@ public class StepDetailFragment extends Fragment {
     ImageView ivArrowLeft;
     @BindView(R.id.iv_arrow_right_step_detail)
     ImageView ivArrowRight;
+    @BindView(R.id.relative_layout_tab)
+    RelativeLayout bottomNavigationLayout;
 
     private ArrayList<StepModel> stepModels;
     private int initialPosition;
 
+    private OnPageSelected mPageSelectedCallback;
+
     public StepDetailFragment() {
         // Constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mPageSelectedCallback = (OnPageSelected) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement OnPageSelected");
+        }
     }
 
     @Nullable
@@ -45,11 +60,20 @@ public class StepDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_step_detail, container, false);
         ButterKnife.bind(this, view);
 
-        if (savedInstanceState != null) {
-            stepModels = savedInstanceState.getParcelableArrayList(getString(R.string.steps_key));
+        int orientation = getResources().getConfiguration().orientation;
+        if (!getResources().getBoolean(R.bool.isTab)) {
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                bottomNavigationLayout.setVisibility(View.GONE);
+            } else {
+                bottomNavigationLayout.setVisibility(View.VISIBLE);
+            }
         }
 
         setTabLayoutParams();
+
+        if (savedInstanceState != null) {
+            stepModels = savedInstanceState.getParcelableArrayList(getString(R.string.steps_key));
+        }
 
         stepDetailViewPager.setAdapter(new StepViewPagerAdapter(getFragmentManager(), stepModels));
         stepDetailTabLayout.setupWithViewPager(stepDetailViewPager, true);
@@ -77,7 +101,9 @@ public class StepDetailFragment extends Fragment {
 
             @Override
             public void onPageSelected(int position) {
-
+                if (mPageSelectedCallback != null) {
+                    mPageSelectedCallback.setOnPageSelected(position);
+                }
             }
 
             @Override
@@ -116,6 +142,10 @@ public class StepDetailFragment extends Fragment {
 
     public void setInitialPosition(int initialPosition) {
         this.initialPosition = initialPosition;
+    }
+
+    public interface OnPageSelected {
+        void setOnPageSelected(int position);
     }
 
     private class StepViewPagerAdapter extends FragmentStatePagerAdapter {
