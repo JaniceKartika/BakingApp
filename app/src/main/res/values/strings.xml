@@ -21,4 +21,7 @@
     <string name="step_position_key">Step Position Key</string>
     <string name="playing_key">Playing Key</string>
     <string name="player_position_key">Player Position Key</string>
+
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>
