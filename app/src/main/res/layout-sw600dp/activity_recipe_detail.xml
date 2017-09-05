@@ -32,20 +32,32 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/iv_recipe_detail"
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/image_max_height"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/image_description"
-                android:scaleType="centerCrop"
-                tools:src="@drawable/cheese_cake" />
+                android:layout_height="match_parent">
 
-            <FrameLayout
-                android:id="@+id/recipe_detail_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerInside" />
+                <LinearLayout
+                    android:id="@+id/layout_recipe_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/iv_recipe_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/image_max_height"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/image_description"
+                        android:scaleType="centerCrop"
+                        tools:src="@drawable/cheese_cake" />
+
+                    <FrameLayout
+                        android:id="@+id/recipe_detail_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside" />
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
         </LinearLayout>
 
         <FrameLayout

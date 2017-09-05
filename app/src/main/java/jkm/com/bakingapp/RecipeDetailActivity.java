@@ -53,13 +53,13 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
         if (findViewById(R.id.linear_layout_two_pane) != null) {
             isTwoPane = true;
+            setTitle(recipeModel.getSteps().get(0).getShortDescription());
+
             View toolbarShadow = findViewById(R.id.toolbar_shadow_recipe_detail);
             toolbarShadow.bringToFront();
 
             if (savedInstanceState == null) {
                 StepDetailFragment stepDetailFragment = StepDetailFragment.newInstance(this, recipeModel.getSteps(), 0);
-                setTitle(recipeModel.getSteps().get(0).getShortDescription());
-
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .add(R.id.step_detail_container, stepDetailFragment)
