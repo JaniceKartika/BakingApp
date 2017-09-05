@@ -42,7 +42,8 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
     private RecipeAdapter mAdapter;
     private ArrayList<RecipeModel> mRecipeModels = new ArrayList<>();
 
-    private OnRecipeClickListener mCallback;
+    private OnRecipeClickListener mRecipeClickCallback;
+    private OnRecipeFetchFinished mRecipeFetchFinishedCallback;
     private RecipeInterface mRecipeInterface;
 
     public RecipeFragment() {
@@ -53,9 +54,11 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mCallback = (OnRecipeClickListener) context;
+            mRecipeClickCallback = (OnRecipeClickListener) context;
+            mRecipeFetchFinishedCallback = (OnRecipeFetchFinished) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnRecipeClickListener");
+            throw new ClassCastException(context.toString() + " must implement both" +
+                    "OnRecipeClickListener and OnRecipeFetchFinished");
         }
     }
 
@@ -98,8 +101,8 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
 
     @Override
     public void setOnItemClickListener(View view, int position) {
-        if (mCallback != null) {
-            mCallback.onRecipeSelected(mRecipeModels.get(position));
+        if (mRecipeClickCallback != null) {
+            mRecipeClickCallback.setOnRecipeSelected(mRecipeModels.get(position));
         }
     }
 
@@ -128,6 +131,10 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
                     }
                 } else {
                     showEmptyMessage();
+                }
+
+                if (mRecipeFetchFinishedCallback != null) {
+                    mRecipeFetchFinishedCallback.setOnRecipeFetchFinished();
                 }
             }
 
@@ -165,7 +172,11 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
     }
 
     interface OnRecipeClickListener {
-        void onRecipeSelected(RecipeModel recipeModel);
+        void setOnRecipeSelected(RecipeModel recipeModel);
+    }
+
+    interface OnRecipeFetchFinished {
+        void setOnRecipeFetchFinished();
     }
 
     interface RecipeInterface {

@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import jkm.com.bakingapp.model.RecipeModel;
 
-public class RecipeActivity extends AppCompatActivity implements RecipeFragment.OnRecipeClickListener {
+public class RecipeActivity extends AppCompatActivity implements RecipeFragment.OnRecipeClickListener,
+        RecipeFragment.OnRecipeFetchFinished {
+
+    private boolean isFetchFinished;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -15,9 +18,22 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
     }
 
     @Override
-    public void onRecipeSelected(RecipeModel recipeModel) {
+    public void setOnRecipeSelected(RecipeModel recipeModel) {
         Intent intent = new Intent(this, RecipeDetailActivity.class);
         intent.putExtra(getString(R.string.recipes_key), recipeModel);
         startActivity(intent);
+    }
+
+    @Override
+    public void setOnRecipeFetchFinished() {
+        setFetchFinished(true);
+    }
+
+    public boolean isFetchFinished() {
+        return isFetchFinished;
+    }
+
+    public void setFetchFinished(boolean fetchFinished) {
+        isFetchFinished = fetchFinished;
     }
 }
