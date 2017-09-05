@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_recipe_detail"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+    <View
+        android:id="@+id/toolbar_shadow_recipe_detail"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@id/toolbar_recipe_detail"
+        android:background="@drawable/toolbar_drop_shadow" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/linear_layout_two_pane"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar_recipe_detail"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_recipe_detail"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/image_max_height"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/image_description"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/cheese_cake" />
+
+            <FrameLayout
+                android:id="@+id/recipe_detail_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerInside" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/step_detail_container"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:scaleType="centerInside" />
+    </LinearLayout>
+</RelativeLayout>
