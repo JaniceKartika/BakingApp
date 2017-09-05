@@ -134,7 +134,7 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
                 }
 
                 if (mRecipeFetchFinishedCallback != null) {
-                    mRecipeFetchFinishedCallback.setOnRecipeFetchFinished();
+                    mRecipeFetchFinishedCallback.setOnRecipeFetchFinished(mRecipeModels);
                 }
             }
 
@@ -176,7 +176,7 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
     }
 
     interface OnRecipeFetchFinished {
-        void setOnRecipeFetchFinished();
+        void setOnRecipeFetchFinished(ArrayList<RecipeModel> recipeModels);
     }
 
     interface RecipeInterface {

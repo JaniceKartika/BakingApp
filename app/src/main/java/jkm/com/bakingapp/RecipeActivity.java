@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 import jkm.com.bakingapp.model.RecipeModel;
 
 public class RecipeActivity extends AppCompatActivity implements RecipeFragment.OnRecipeClickListener,
         RecipeFragment.OnRecipeFetchFinished {
 
+    private ArrayList<RecipeModel> recipeModels;
     private boolean isFetchFinished;
 
     @Override
@@ -25,7 +28,8 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
     }
 
     @Override
-    public void setOnRecipeFetchFinished() {
+    public void setOnRecipeFetchFinished(ArrayList<RecipeModel> recipeModels) {
+        setRecipeModels(recipeModels);
         setFetchFinished(true);
     }
 
@@ -35,5 +39,13 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
 
     public void setFetchFinished(boolean fetchFinished) {
         isFetchFinished = fetchFinished;
+    }
+
+    public ArrayList<RecipeModel> getRecipeModels() {
+        return recipeModels;
+    }
+
+    public void setRecipeModels(ArrayList<RecipeModel> recipeModels) {
+        this.recipeModels = recipeModels;
     }
 }
