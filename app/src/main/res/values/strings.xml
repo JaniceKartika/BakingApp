@@ -3,6 +3,9 @@
     <string name="recipe_detail_label">Recipe Detail</string>
     <string name="step_detail_label">Step Detail</string>
 
+    <string name="content_authority" translatable="false">jkm.com.bakingapp</string>
+    <string name="loader_not_implemented">Loader not implemented&#160;</string>
+
     <string name="image_description">Recipe Image</string>
 
     <string name="failed_fetch_recipes">Failed to fetch Recipes</string>
@@ -15,12 +18,12 @@
     <string name="ingredients">Ingredients</string>
     <string name="steps">Steps</string>
 
-    <string name="recipes_key">Recipes Key</string>
-    <string name="steps_key">Steps Key</string>
-    <string name="each_step_key">Each Step Key</string>
-    <string name="step_position_key">Step Position Key</string>
-    <string name="playing_key">Playing Key</string>
-    <string name="player_position_key">Player Position Key</string>
+    <string name="recipes_key" translatable="false">Recipes Key</string>
+    <string name="steps_key" translatable="false">Steps Key</string>
+    <string name="each_step_key" translatable="false">Each Step Key</string>
+    <string name="step_position_key" translatable="false">Step Position Key</string>
+    <string name="playing_key" translatable="false">Playing Key</string>
+    <string name="player_position_key" translatable="false">Player Position Key</string>
 
     <string name="widget_configuration_label">Select Recipe to Display</string>
 </resources>

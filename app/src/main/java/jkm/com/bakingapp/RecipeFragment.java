@@ -1,5 +1,6 @@
 package jkm.com.bakingapp;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -20,6 +21,10 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jkm.com.bakingapp.adapter.RecipeAdapter;
+import jkm.com.bakingapp.data.IngredientColumns;
+import jkm.com.bakingapp.data.RecipeColumns;
+import jkm.com.bakingapp.data.RecipeProvider;
+import jkm.com.bakingapp.model.IngredientModel;
 import jkm.com.bakingapp.model.RecipeModel;
 import jkm.com.bakingapp.util.GridSpacingItemDecoration;
 import retrofit2.Call;
@@ -124,6 +129,9 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
                         mRecipeModels.clear();
                         mRecipeModels.addAll(recipeModels);
 
+                        bulkInsertRecipes(getContext(), mRecipeModels);
+                        bulkInsertIngredients(getContext(), mRecipeModels);
+
                         mAdapter.notifyDataSetChanged();
                         hideLoading();
                     } else {
@@ -157,6 +165,50 @@ public class RecipeFragment extends Fragment implements RecipeAdapter.OnItemClic
         recipeRecyclerView.setVisibility(View.INVISIBLE);
         recipeEmptyTextView.setVisibility(View.GONE);
         recipeProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void bulkInsertRecipes(final Context context, final ArrayList<RecipeModel> recipeModels) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ContentValues[] recipeValues = new ContentValues[recipeModels.size()];
+                for (int i = 0; i < recipeModels.size(); i++) {
+                    RecipeModel recipeModel = recipeModels.get(i);
+                    ContentValues cv = new ContentValues();
+                    cv.put(RecipeColumns.RECIPE_ID, recipeModel.getId());
+                    cv.put(RecipeColumns.NAME, recipeModel.getName());
+                    cv.put(RecipeColumns.SERVINGS, recipeModel.getServings());
+                    cv.put(RecipeColumns.IMAGE, recipeModel.getImage());
+                    recipeValues[i] = cv;
+                }
+                context.getContentResolver().bulkInsert(RecipeProvider.Recipes.CONTENT_URI, recipeValues);
+            }
+        }).start();
+    }
+
+    private void bulkInsertIngredients(final Context context, final ArrayList<RecipeModel> recipeModels) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // delete previous saved data
+                context.getContentResolver().delete(RecipeProvider.Ingredients.CONTENT_URI, null, null);
+
+                for (RecipeModel recipeModel : recipeModels) {
+                    ArrayList<IngredientModel> ingredientModels = recipeModel.getIngredients();
+                    ContentValues[] ingredientValues = new ContentValues[ingredientModels.size()];
+                    for (int i = 0; i < ingredientModels.size(); i++) {
+                        IngredientModel ingredientModel = ingredientModels.get(i);
+                        ContentValues cv = new ContentValues();
+                        cv.put(IngredientColumns.QUANTITY, ingredientModel.getQuantity());
+                        cv.put(IngredientColumns.MEASURE, ingredientModel.getMeasure());
+                        cv.put(IngredientColumns.INGREDIENT, ingredientModel.getIngredient());
+                        cv.put(IngredientColumns.RECIPE_ID, recipeModel.getId());
+                        ingredientValues[i] = cv;
+                    }
+                    context.getContentResolver().bulkInsert(RecipeProvider.Ingredients.fromRecipe(recipeModel.getId()), ingredientValues);
+                }
+            }
+        }).start();
     }
 
     private void hideLoading() {
