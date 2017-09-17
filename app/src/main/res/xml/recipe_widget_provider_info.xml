@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:initialKeyguardLayout="@layout/recipe_widget_provider"
-    android:initialLayout="@layout/recipe_widget_provider"
-    android:minHeight="40dp"
-    android:minWidth="40dp"
-    android:previewImage="@drawable/example_appwidget_preview"
+    android:configure="jkm.com.bakingapp.widget.RecipeWidgetConfigurationActivity"
+    android:initialKeyguardLayout="@layout/widget_recipe"
+    android:initialLayout="@layout/widget_recipe"
+    android:minHeight="@dimen/widget_min_height"
+    android:minResizeHeight="@dimen/widget_min_height"
+    android:minResizeWidth="@dimen/widget_min_width"
+    android:minWidth="@dimen/widget_min_width"
+    android:previewImage="@mipmap/ic_launcher"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="86400000"
     android:widgetCategory="home_screen" />

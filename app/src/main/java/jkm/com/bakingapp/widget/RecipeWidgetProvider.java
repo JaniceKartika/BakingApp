@@ -1,9 +1,11 @@
-package jkm.com.bakingapp;
+package jkm.com.bakingapp.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.widget.RemoteViews;
+
+import jkm.com.bakingapp.R;
 
 /**
  * Implementation of App Widget functionality.
@@ -11,10 +13,8 @@ import android.widget.RemoteViews;
 public class RecipeWidgetProvider extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_recipe);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
