@@ -26,4 +26,6 @@
     <string name="player_position_key" translatable="false">Player Position Key</string>
 
     <string name="widget_configuration_label">Select Recipe to Display</string>
+    <string name="recipe_not_available">Recipe is not available</string>
+    <string name="cancel_widget">Cancel</string>
 </resources>

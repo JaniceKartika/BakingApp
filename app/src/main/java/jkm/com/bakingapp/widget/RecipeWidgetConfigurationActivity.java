@@ -3,6 +3,8 @@ package jkm.com.bakingapp.widget;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,23 +13,32 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.RemoteViews;
-import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jkm.com.bakingapp.R;
-import jkm.com.bakingapp.data.IngredientColumns;
+import jkm.com.bakingapp.adapter.RecipeAdapter;
 import jkm.com.bakingapp.data.RecipeColumns;
 import jkm.com.bakingapp.data.RecipeProvider;
+import jkm.com.bakingapp.model.RecipeModel;
+import jkm.com.bakingapp.util.GridSpacingItemDecoration;
 
-public class RecipeWidgetConfigurationActivity extends AppCompatActivity implements
-        LoaderManager.LoaderCallbacks<Cursor> {
+public class RecipeWidgetConfigurationActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
+        RecipeAdapter.OnItemClickListener {
+    private static final String PREFS_NAME = "RecipeWidgetPrefs";
+    private static final String PREF_ID_PREFIX_KEY = "recipeId";
+    private static final String PREF_NAME_PREFIX_KEY = "recipeName";
+
     private static final int ID_RECIPE_LOADER = 10;
-    private static final int ID_INGREDIENT_LOADER = 20;
-
     private static final String[] RECIPE_PROJECTION = {
             RecipeColumns.RECIPE_ID,
             RecipeColumns.NAME,
@@ -39,21 +50,13 @@ public class RecipeWidgetConfigurationActivity extends AppCompatActivity impleme
     public static final int INDEX_SERVINGS = 2;
     public static final int INDEX_IMAGE = 3;
 
-    private static final String[] INGREDIENT_PROJECTION = {
-            IngredientColumns.QUANTITY,
-            IngredientColumns.MEASURE,
-            IngredientColumns.INGREDIENT,
-            IngredientColumns.RECIPE_ID
-    };
-    public static final int INDEX_QUANTITY = 0;
-    public static final int INDEX_MEASURE = 1;
-    public static final int INDEX_INGREDIENT = 2;
-    public static final int INDEX_INGREDIENT_RECIPE_ID = 3;
+    @BindView(R.id.rv_recipe_widget_configuration)
+    RecyclerView recipeWidgetConfigurationRecyclerView;
 
-    @BindView(R.id.tv_recipe_widget_configuration)
-    TextView recipeWidgetTextView;
+    private int mRecipeWidgetId;
 
-    private int mAppWidgetId;
+    private RecipeAdapter mAdapter;
+    private ArrayList<RecipeModel> mRecipeModels = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,32 +68,60 @@ public class RecipeWidgetConfigurationActivity extends AppCompatActivity impleme
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            mAppWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            mRecipeWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
         }
-        if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
+        if (mRecipeWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
         }
 
-        recipeWidgetTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                createWidget(RecipeWidgetConfigurationActivity.this);
-            }
-        });
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            configureRecyclerView(recipeWidgetConfigurationRecyclerView, 2);
+        } else {
+            configureRecyclerView(recipeWidgetConfigurationRecyclerView, 1);
+        }
+        mAdapter = new RecipeAdapter(this, mRecipeModels, this);
+        recipeWidgetConfigurationRecyclerView.setAdapter(mAdapter);
 
         getSupportLoaderManager().initLoader(ID_RECIPE_LOADER, null, this);
-        getSupportLoaderManager().initLoader(ID_INGREDIENT_LOADER, null, this);
+    }
+
+    private void configureRecyclerView(RecyclerView recyclerView, int spanCount) {
+        GridLayoutManager layoutManager = new GridLayoutManager(this, spanCount);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, 0, true));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void createWidget(Context context) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_recipe);
-        appWidgetManager.updateAppWidget(mAppWidgetId, views);
+        RecipeWidgetProvider.updateAppWidget(context, appWidgetManager, mRecipeWidgetId);
 
         Intent resultValue = new Intent();
-        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mRecipeWidgetId);
         setResult(RESULT_OK, resultValue);
         finish();
+    }
+
+    @Override
+    public void setOnItemClickListener(View view, int position) {
+        RecipeModel recipeModel = mRecipeModels.get(position);
+        saveWidgetPreferences(this, mRecipeWidgetId, recipeModel.getId(), recipeModel.getName());
+        createWidget(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.widget_config_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_cancel) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -100,10 +131,6 @@ public class RecipeWidgetConfigurationActivity extends AppCompatActivity impleme
                 Uri recipeQueryUri = RecipeProvider.Recipes.CONTENT_URI;
                 String recipeSortOrder = RecipeColumns.ID + " ASC";
                 return new CursorLoader(this, recipeQueryUri, RECIPE_PROJECTION, null, null, recipeSortOrder);
-            case ID_INGREDIENT_LOADER:
-                Uri ingredientQueryUri = RecipeProvider.Ingredients.CONTENT_URI;
-                String ingredientSortOrder = IngredientColumns.ID + " ASC";
-                return new CursorLoader(this, ingredientQueryUri, INGREDIENT_PROJECTION, null, null, ingredientSortOrder);
             default:
                 throw new RuntimeException(getString(R.string.loader_not_implemented) + id);
         }
@@ -111,34 +138,55 @@ public class RecipeWidgetConfigurationActivity extends AppCompatActivity impleme
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        switch (loader.getId()) {
-            case ID_RECIPE_LOADER:
-                for (int i = 0; i < data.getCount(); i++) {
-                    data.moveToPosition(i);
-                    String print = data.getInt(INDEX_RECIPE_ID) + "   " +
-                            data.getString(INDEX_NAME) + "   " +
-                            data.getInt(INDEX_SERVINGS) + "   " +
-                            data.getString(INDEX_IMAGE);
-                    Log.d("test", print);
-                }
-                break;
-            case ID_INGREDIENT_LOADER:
-                for (int i = 0; i < data.getCount(); i++) {
-                    data.moveToPosition(i);
-                    String print = data.getDouble(INDEX_QUANTITY) + "   " +
-                            data.getString(INDEX_MEASURE) + "   " +
-                            data.getString(INDEX_INGREDIENT) + "   " +
-                            data.getInt(INDEX_INGREDIENT_RECIPE_ID);
-                    Log.d("test", print);
-                }
-                break;
-            default:
-                break;
+        if (data.getCount() == 0) {
+            Toast.makeText(this, getString(R.string.recipe_not_available), Toast.LENGTH_LONG).show();
+            finish();
+        } else {
+            convertToRecipeModel(data);
+            mAdapter.notifyDataSetChanged();
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        mRecipeModels.clear();
+        mAdapter.notifyDataSetChanged();
+    }
 
+    private void convertToRecipeModel(Cursor data) {
+        mRecipeModels.clear();
+        for (int i = 0; i < data.getCount(); i++) {
+            data.moveToPosition(i);
+            RecipeModel model = new RecipeModel();
+            model.setId(data.getInt(INDEX_RECIPE_ID));
+            model.setName(data.getString(INDEX_NAME));
+            model.setServings(data.getInt(INDEX_SERVINGS));
+            model.setImage(data.getString(INDEX_IMAGE));
+            mRecipeModels.add(model);
+        }
+    }
+
+    private static void saveWidgetPreferences(Context context, int appWidgetId, int recipeId, String recipeName) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+        editor.putInt(PREF_ID_PREFIX_KEY + appWidgetId, recipeId);
+        editor.putString(PREF_NAME_PREFIX_KEY + appWidgetId, recipeName);
+        editor.apply();
+    }
+
+    public static int loadRecipeIdPreference(Context context, int appWidgetId) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        return sharedPreferences.getInt(PREF_ID_PREFIX_KEY + appWidgetId, 0);
+    }
+
+    public static String loadRecipeNamePreference(Context context, int appWidgetId) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        return sharedPreferences.getString(PREF_NAME_PREFIX_KEY + appWidgetId, "");
+    }
+
+    public static void deleteWidgetPreferences(Context context, int appWidgetId) {
+        SharedPreferences.Editor editor = context.getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
+        editor.remove(PREF_ID_PREFIX_KEY + appWidgetId);
+        editor.remove(PREF_NAME_PREFIX_KEY + appWidgetId);
+        editor.apply();
     }
 }

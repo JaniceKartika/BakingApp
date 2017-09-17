@@ -1,18 +1,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryLight"
     android:padding="@dimen/widget_margin">
 
     <TextView
-        android:id="@+id/recipe_widget_text_view"
-        android:layout_width="wrap_content"
+        android:id="@+id/recipe_name_widget_text_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:background="@color/colorPrimaryLight"
-        android:text="@string/app_name"
-        android:textColor="@color/textColorPrimary"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="@dimen/vertical_margin"
+        android:paddingEnd="@dimen/horizontal_margin"
+        android:paddingStart="@dimen/horizontal_margin"
+        android:paddingTop="@dimen/vertical_margin"
+        android:textColor="@android:color/white"
         android:textSize="@dimen/font_large"
-        android:textStyle="bold|italic" />
+        android:textStyle="bold"
+        tools:text="Nutella Pie" />
 </RelativeLayout>
