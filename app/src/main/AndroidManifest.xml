@@ -53,6 +53,10 @@
         <provider
             android:name=".data.generated.RecipeProvider"
             android:authorities="@string/content_authority"
-            android:exported="false" />
+            android:exported="true" />
+
+        <service
+            android:name=".widget.RecipeWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 </manifest>

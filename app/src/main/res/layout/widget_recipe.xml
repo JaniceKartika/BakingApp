@@ -17,4 +17,11 @@
         android:textSize="@dimen/font_large"
         android:textStyle="bold"
         tools:text="Nutella Pie" />
+
+    <ListView
+        android:id="@+id/recipe_ingredients_widget_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/recipe_name_widget_text_view"
+        android:background="@android:color/white" />
 </RelativeLayout>

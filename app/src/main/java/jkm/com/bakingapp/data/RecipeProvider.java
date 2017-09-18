@@ -52,7 +52,7 @@ public final class RecipeProvider {
                 type = "vnd.android.cursor.item/recipe",
                 whereColumn = RecipeColumns.RECIPE_ID,
                 pathSegment = 1)
-        public static Uri withId(long id) {
+        public static Uri withId(int id) {
             return buildUri(Path.RECIPES, String.valueOf(id));
         }
 
@@ -85,7 +85,7 @@ public final class RecipeProvider {
                 whereColumn = IngredientColumns.RECIPE_ID,
                 pathSegment = 2,
                 defaultSort = IngredientColumns.ID + " ASC")
-        public static Uri fromRecipe(long recipeId) {
+        public static Uri fromRecipe(int recipeId) {
             return buildUri(Path.INGREDIENTS, Path.FROM_RECIPE, String.valueOf(recipeId));
         }
     }
